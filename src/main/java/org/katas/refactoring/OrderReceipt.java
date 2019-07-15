@@ -7,6 +7,11 @@ package org.katas.refactoring;
  * total sales tax) and prints it.
  */
 public class OrderReceipt {
+    private final char TAB = '\t';
+    private final char NEWLINE = '\n';
+    private final String PRINTING_ORDERS = "======Printing Orders======\n";
+    private final String SALES_TAX = "Sales Tax";
+    private final String TOTAL_AMOUNT = "Total Amount";
     private Order order;
 
     public OrderReceipt(Order order) {
@@ -28,27 +33,29 @@ public class OrderReceipt {
         return receipt.toString();
     }
 
-  private void appendReceiptEnd(StringBuilder receipt, double totalSalesTax, double totalAmount) {
-    receipt.append("Sales Tax\t");
-    receipt.append(totalSalesTax);
-    receipt.append("Total Amount\t");
-    receipt.append(totalAmount);
-  }
+    private void appendReceiptEnd(StringBuilder receipt, double totalSalesTax, double totalAmount) {
+        receipt.append(SALES_TAX);
+        receipt.append(TAB);
+        receipt.append(totalSalesTax);
+        receipt.append(TOTAL_AMOUNT);
+        receipt.append(TAB);
+        receipt.append(totalAmount);
+    }
 
-  private void appendReceiptHead(StringBuilder receipt) {
-    receipt.append("======Printing Orders======\n");
-    receipt.append(order.getCustomerName());
-    receipt.append(order.getCustomerAddress());
-  }
+    private void appendReceiptHead(StringBuilder receipt) {
+        receipt.append(PRINTING_ORDERS);
+        receipt.append(order.getCustomerName());
+        receipt.append(order.getCustomerAddress());
+    }
 
-  private void appendLineItem(StringBuilder receipt, LineItem lineItem) {
-    receipt.append(lineItem.getDescription());
-    receipt.append('\t');
-    receipt.append(lineItem.getPrice());
-    receipt.append('\t');
-    receipt.append(lineItem.getQuantity());
-    receipt.append('\t');
-    receipt.append(lineItem.totalAmount());
-    receipt.append('\n');
-  }
+    private void appendLineItem(StringBuilder receipt, LineItem lineItem) {
+        receipt.append(lineItem.getDescription());
+        receipt.append(TAB);
+        receipt.append(lineItem.getPrice());
+        receipt.append(TAB);
+        receipt.append(lineItem.getQuantity());
+        receipt.append(TAB);
+        receipt.append(lineItem.totalAmount());
+        receipt.append(NEWLINE);
+    }
 }
