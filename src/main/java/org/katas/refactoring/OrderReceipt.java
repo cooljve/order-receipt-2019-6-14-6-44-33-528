@@ -12,6 +12,7 @@ public class OrderReceipt {
     private final String PRINTING_ORDERS = "======Printing Orders======\n";
     private final String SALES_TAX = "Sales Tax";
     private final String TOTAL_AMOUNT = "Total Amount";
+    private final double taxRate = .10;
     private Order order;
 
     public OrderReceipt(Order order) {
@@ -25,7 +26,7 @@ public class OrderReceipt {
         double totalAmount = 0d;
         for (LineItem lineItem : order.getLineItems()) {
             appendLineItem(receipt, lineItem);
-            double salesTax = lineItem.totalAmount() * .10;
+            double salesTax = lineItem.totalAmount() * taxRate;
             totalSalesTax += salesTax;
             totalAmount += lineItem.totalAmount() + salesTax;
         }
