@@ -12,7 +12,6 @@ public class OrderReceipt {
     private final String PRINTING_ORDERS = "======Printing Orders======\n";
     private final String SALES_TAX = "Sales Tax";
     private final String TOTAL_AMOUNT = "Total Amount";
-    private final double taxRate = .10;
     private Order order;
 
     public OrderReceipt(Order order) {
@@ -21,42 +20,50 @@ public class OrderReceipt {
 
     public String printReceipt() {
         StringBuilder receipt = new StringBuilder();
-        appendReceiptHead(receipt);
+        receipt.append(createReceiptHead());
         double totalSalesTax = 0d;
         double totalAmount = 0d;
         for (LineItem lineItem : order.getLineItems()) {
-            appendLineItem(receipt, lineItem);
-            double salesTax = lineItem.totalAmount() * taxRate;
+            receipt.append(createLineItemInformation(lineItem));
+            double salesTax = lineItem.caculateSalesTax();
             totalSalesTax += salesTax;
             totalAmount += lineItem.totalAmount() + salesTax;
         }
-        appendReceiptEnd(receipt, totalSalesTax, totalAmount);
+        receipt.append(createReceiptEnd(totalSalesTax, totalAmount));
         return receipt.toString();
     }
 
-    private void appendReceiptEnd(StringBuilder receipt, double totalSalesTax, double totalAmount) {
-        receipt.append(SALES_TAX);
-        receipt.append(TAB);
-        receipt.append(totalSalesTax);
-        receipt.append(TOTAL_AMOUNT);
-        receipt.append(TAB);
-        receipt.append(totalAmount);
+
+
+    private String createReceiptEnd(double totalSalesTax, double totalAmount) {
+        StringBuilder output = new StringBuilder();
+        output.append(SALES_TAX);
+        output.append(TAB);
+        output.append(totalSalesTax);
+        output.append(TOTAL_AMOUNT);
+        output.append(TAB);
+        output.append(totalAmount);
+        return output.toString();
     }
 
-    private void appendReceiptHead(StringBuilder receipt) {
-        receipt.append(PRINTING_ORDERS);
-        receipt.append(order.getCustomerName());
-        receipt.append(order.getCustomerAddress());
+    private String createReceiptHead() {
+        StringBuilder output = new StringBuilder();
+        output.append(PRINTING_ORDERS);
+        output.append(order.getCustomerName());
+        output.append(order.getCustomerAddress());
+        return output.toString();
     }
 
-    private void appendLineItem(StringBuilder receipt, LineItem lineItem) {
-        receipt.append(lineItem.getDescription());
-        receipt.append(TAB);
-        receipt.append(lineItem.getPrice());
-        receipt.append(TAB);
-        receipt.append(lineItem.getQuantity());
-        receipt.append(TAB);
-        receipt.append(lineItem.totalAmount());
-        receipt.append(NEWLINE);
+    private String createLineItemInformation(LineItem lineItem) {
+        StringBuilder output = new StringBuilder();
+        output.append(lineItem.getDescription());
+        output.append(TAB);
+        output.append(lineItem.getPrice());
+        output.append(TAB);
+        output.append(lineItem.getQuantity());
+        output.append(TAB);
+        output.append(lineItem.totalAmount());
+        output.append(NEWLINE);
+        return output.toString();
     }
 }
